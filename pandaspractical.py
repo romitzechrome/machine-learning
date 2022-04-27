@@ -351,7 +351,7 @@ print(pd.read_csv("data.csv",header=None,prefix="Columns"))
 # 5     1005       11           4              8
 # 6     1006       10           2              9
 
- 
+
 print(pd.read_csv("data.csv",names=["a","b","c","D","e","f"]))
 
 # perticuler column ne header apvama ave tyare 
@@ -577,7 +577,6 @@ print(df.isnull())
 # 8    False  False       False          False  False
 
 print(df.isnull().sum())
-
 # jetli coluumn ma jetli null value hase teno sum apsse 
 # student          0
 # class            3
@@ -895,10 +894,7 @@ print(df)
 # 8     1009   10.0           6              8   No
 
 
-
-
 df = pd.read_csv("data.csv")
-
 print(df.replace(to_replace="Yes",value="finance"))
 
 #  jya jay Yes hase tya finance kari de 
@@ -1019,7 +1015,7 @@ print(df.replace("yes",method='pad'))
 # 4     1005    NaN           4              8   No
 # 5     1006    NaN           2              9  YES
 # 6     1007   12.0           5              8  Yes
-# 7     1008   12.0           6              8  NaN
+# 7     1008   12.0           6              8  NaN `   `
 # 8     1009   10.0           6              8   No
 
 print(df.replace(0,method='bfill',limit = 1))
@@ -1053,6 +1049,38 @@ print(df)
 # 6     1007     12           5              8  Yes
 # 7     1008     12           6              8  NaN
 # 8     1009     10           6              8   No
+
+
+# 31-----p13-------------------------------------------------------------------------------------
+print()
+print("__________________pandas interpolate")
+print()
+
+
+df =  pd.read_csv("student.csv")
+print(df)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
