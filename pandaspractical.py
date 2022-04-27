@@ -1,9 +1,12 @@
+from email.errors import InvalidBase64CharactersDefect
 from importlib.metadata import PathDistribution
 from msilib.schema import LaunchCondition
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import os 
+import os
+
+from pytest import mark 
 
 # patterns ne find out karvaamate pandas no upyog thay 
 # a process ne poreprocessing kahevay ana mate pandas libreary no use thay che 
@@ -1059,6 +1062,846 @@ print()
 
 df =  pd.read_csv("student.csv")
 print(df)
+
+#      id name  rollnum  marks
+# 0   1.0  aaa     11.0   98.0
+# 1   2.0  bbb     12.0   56.0
+# 2   3.0  ccc     13.0   96.0
+# 3   4.0  ddd     14.0   98.0
+# 4   NaN  eee      NaN    NaN
+# 5   NaN  fff     16.0    NaN
+# 6   NaN  NaN     17.0    NaN
+# 7   8.0  hhh      NaN   86.0
+# 8   9.0  iii     19.0   75.0
+# 9  10.0  jjj     20.0   76.0
+
+
+print(df.interpolate())
+# interpolate function a numeric va;lue ne auto matic fillup kare te nan box ni agal pachal ni valyu parthi automatic tene fillup kare 
+# string valueue ma te Nan j revadese 
+# by default linear pramane te update kare matlab k teni agal pachal ni value ne dhyan ma rakhi ne te ni vacceh ni value print karse 
+#      id name  rollnum  marks
+# 0   1.0  aaa     11.0   98.0
+# 1   2.0  bbb     12.0   56.0
+# 2   3.0  ccc     13.0   96.0
+# 3   4.0  ddd     14.0   98.0
+# 4   5.0  eee     15.0   95.0
+# 5   6.0  fff     16.0   92.0
+# 6   7.0  NaN     17.0   89.0
+# 7   8.0  hhh     18.0   86.0
+# 8   9.0  iii     19.0   75.0
+# 9  10.0  jjj     20.0   76.0
+
+
+
+# print(df.interpolate(method='time'))
+# method='time' a only datetime formate ne j automatic update kare but ahi ap[di pase date column a str ma che to tene date time ma convert karvi pade ] 
+# te index number pramane autoimatic update kare
+# date ne index ma lavvi pade 
+
+print(type(df.date[0]))
+# <class 'str'>
+
+df =  pd.read_csv("student.csv",parse_dates=['date'])
+print(df)
+#      id name  rollnum  marks       date
+# 0   1.0  aaa     11.0   98.0   2021-02-01
+# 1   2.0  bbb     12.0   56.0   2021-03-01
+# 2   3.0  ccc     13.0   96.0   2021-01-01
+# 3   4.0  ddd     14.0   98.0   2021-01-01
+# 4   NaN  eee      NaN    NaN   2021-05-01
+# 5   NaN  fff     16.0    NaN        NaT
+# 6   NaN  NaN     17.0    NaN   2021-08-01
+# 7   8.0  hhh      NaN   86.0        NaT
+# 8   9.0  iii     19.0   75.0   2021-09-01
+# 9  10.0  jjj     20.0   76.0   2021-10-01
+
+
+print(type(df.date[0]))
+# <class 'pandas._libs.tslibs.timestamps.Timestamp'>
+
+df =  pd.read_csv("student.csv",parse_dates=['date'],index_col=['date'])
+print(df)
+
+#               id name  rollnum  marks
+# date
+# 2021-02-01   1.0  aaa     11.0   98.0
+# 2021-03-03   2.0  bbb     12.0   56.0
+# 2021-01-01   3.0  ccc     13.0   96.0
+# 2021-01-02   4.0  ddd     14.0   98.0
+# 2021-05-01   NaN  eee      NaN    NaN
+# 2021-08-02   NaN  fff     16.0    NaN
+# 2021-08-08   NaN  NaN     17.0    NaN
+# 2021-08-15   8.0  hhh      NaN   86.0
+# 2021-09-01   9.0  iii     19.0   75.0
+# 2021-10-01  10.0  jjj     20.0   76.0
+
+
+print(df.interpolate(method='time'))
+# te teni najik ni date pramne te nan value ne fillup karse 
+
+
+#                    id name    rollnum      marks
+# date
+# 2021-02-01   1.000000  aaa  11.000000  98.000000
+# 2021-03-03   2.000000  bbb  12.000000  56.000000
+# 2021-01-01   3.000000  ccc  13.000000  96.000000
+# 2021-01-02   4.000000  ddd  14.000000  98.000000
+# 2021-05-01   4.145455  eee  13.552632  66.727273
+# 2021-08-02   7.527273  fff  16.000000  83.636364
+# 2021-08-08   7.745455  NaN  17.000000  84.727273
+# 2021-08-15   8.000000  hhh  17.583333  86.000000
+# 2021-09-01   9.000000  iii  19.000000  75.000000
+# 2021-10-01  10.000000  jjj  20.000000  76.000000
+
+
+
+df =  pd.read_csv("student.csv",parse_dates=['date'],index_col=['id'])
+print(df)
+
+#      name  rollnum  marks       date
+# id
+# 1.0   aaa     11.0   98.0 2021-02-01
+# 2.0   bbb     12.0   56.0 2021-03-03
+# 3.0   ccc     13.0   96.0 2021-01-01
+# 4.0   ddd     14.0   98.0 2021-01-02
+# NaN   eee      NaN    NaN 2021-05-01
+# NaN   fff     16.0    NaN 2021-08-02
+# NaN   NaN     17.0    NaN 2021-08-08
+# 8.0   hhh      NaN   86.0 2021-08-15
+# 9.0   iii     19.0   75.0 2021-09-01
+# 10.0  jjj     20.0   76.0 2021-10-01
+
+
+df =  pd.read_csv("student.csv")
+print(df)
+
+#    id name  rollnum  marks      date
+# 0   1  aaa     11.0   98.0  02-01-21
+# 1   2  bbb     12.0   56.0  03-03-21
+# 2   3  ccc     13.0   96.0  01-01-21
+# 3   4  ddd     14.0   98.0  01-02-21
+# 4   5  eee      NaN    NaN  05-01-21
+# 5   6  fff     16.0    NaN  08-02-21
+# 6   7  NaN     17.0    NaN  08-08-21
+# 7   8  hhh      NaN   86.0  15-08-21
+# 8   9  iii     19.0   75.0  09-01-21
+# 9  10  jjj     20.0   76.0  10-01-21
+
+
+print(df.interpolate(limit=1))
+
+# limit = 1 mins k ak  column ma  (ak sathe) 1 varj value fill karse ane biji but ghani badhi value update kare limit change karo te pramane change thay 
+
+#    id name  rollnum  marks      date
+# 0   1  aaa     11.0   98.0  02-01-21
+# 1   2  bbb     12.0   56.0  03-03-21
+# 2   3  ccc     13.0   96.0  01-01-21
+# 3   4  ddd     14.0   98.0  01-02-21
+# 4   5  eee     15.0   95.0  05-01-21
+# 5   6  fff     16.0    NaN  08-02-21
+# 6   7  NaN     17.0    NaN  08-08-21
+# 7   8  hhh     18.0   86.0  15-08-21
+# 8   9  iii     19.0   75.0  09-01-21
+# 9  10  jjj     20.0   76.0  10-01-21
+
+print(df.interpolate(limit = 1,limit_direction='backward'))
+# backword mins value column ni last mathi update kare ane limit apvi jaruri che 
+
+#    id name  rollnum  marks      date
+# 0   1  aaa     11.0   98.0  02-01-21
+# 1   2  bbb     12.0   56.0  03-03-21
+# 2   3  ccc     13.0   96.0  01-01-21
+# 3   4  ddd     14.0   98.0  01-02-21
+# 4   5  eee     15.0    NaN  05-01-21
+# 5   6  fff     16.0    NaN  08-02-21
+# 6   7  NaN     17.0   89.0  08-08-21
+# 7   8  hhh     18.0   86.0  15-08-21
+# 8   9  iii     19.0   75.0  09-01-21
+# 9  10  jjj     20.0   76.0  10-01-21
+
+
+print(df.interpolate(limit = 1,limit_direction='both'))
+
+# uparthio ane nichethi banne side thi  null value ne filup karse 
+
+#    id name  rollnum  marks      date
+# 0   1  aaa     11.0   98.0  02-01-21
+# 1   2  bbb     12.0   56.0  03-03-21
+# 2   3  ccc     13.0   96.0  01-01-21
+# 3   4  ddd     14.0   98.0  01-02-21
+# 4   5  eee     15.0   95.0  05-01-21
+# 5   6  fff     16.0    NaN  08-02-21
+# 6   7  NaN     17.0   89.0  08-08-21
+# 7   8  hhh     18.0   86.0  15-08-21
+# 8   9  iii     19.0   75.0  09-01-21
+# 9  10  jjj     20.0   76.0  10-01-21
+
+
+print(df.interpolate(limit_area='inside'))
+# badhi nan value ne fill kari dese 
+
+#    id name  rollnum  marks      date
+# 0   1  aaa     11.0   98.0  02-01-21
+# 1   2  bbb     12.0   56.0  03-03-21
+# 2   3  ccc     13.0   96.0  01-01-21
+# 3   4  ddd     14.0   98.0  01-02-21
+# 4   5  eee     15.0   95.0  05-01-21
+# 5   6  fff     16.0   92.0  08-02-21
+# 6   7  NaN     17.0   89.0  08-08-21
+# 7   8  hhh     18.0   86.0  15-08-21
+# 8   9  iii     19.0   75.0  09-01-21
+# 9  10  jjj     20.0   76.0  10-01-21
+
+
+print(df.interpolate(limit_area='outside'))
+#  koi pan missing value ne fill nai kare 
+#    id name  rollnum  marks      date
+# 0   1  aaa     11.0   98.0  02-01-21
+# 1   2  bbb     12.0   56.0  03-03-21
+# 2   3  ccc     13.0   96.0  01-01-21
+# 3   4  ddd     14.0   98.0  01-02-21
+# 4   5  eee      NaN    NaN  05-01-21
+# 5   6  fff     16.0    NaN  08-02-21
+# 6   7  NaN     17.0    NaN  08-08-21
+# 7   8  hhh      NaN   86.0  15-08-21
+# 8   9  iii     19.0   75.0  09-01-21
+# 9  10  jjj     20.0   76.0  10-01-21
+
+
+#33 =====p15====================================================================
+
+print("___________________________loc&iloc in pandas")
+
+df =  pd.read_csv("student.csv")
+print(df)
+#    id name  rollnum  marks      date
+# 0   1  aaa     11.0   98.0  02-01-21
+# 1   2  bbb     12.0   56.0  03-03-21
+# 2   3  ccc     13.0   96.0  01-01-21
+# 3   4  ddd     14.0   98.0  01-02-21
+# 4   5  eee      NaN    NaN  05-01-21
+# 5   6  fff     16.0    NaN  08-02-21
+# 6   7  NaN     17.0    NaN  08-08-21
+# 7   8  hhh      NaN   86.0  15-08-21
+# 8   9  iii     19.0   75.0  09-01-21
+# 9  10  jjj     20.0   76.0  10-01-21
+
+
+print(df.loc[0])
+# first indevc ni value return karse
+
+# id                1
+# name            aaa
+# rollnum        11.0
+# marks          98.0
+# date       02-01-21
+# Name: 0, dtype: object
+
+print(df.loc[[0]])
+
+#    id name  rollnum  marks      date
+# 0   1  aaa     11.0   98.0  02-01-21
+
+print(df.loc[[0,1,2]])
+
+# 0,1,2 a tran index number ni valyue apse 
+#   id name  rollnum  marks      date
+# 0   1  aaa     11.0   98.0  02-01-21
+# 1   2  bbb     12.0   56.0  03-03-21
+# 2   3  ccc     13.0   96.0  01-01-21
+
+
+print(df.loc[1,'marks'])
+# marks column ni 1 index par raheli val ne print karse 
+56.0
+
+print(df.loc[1:9,'marks'])
+#  index number 1 thi 9 sudhi ni marks column ma raheli badhi value print thay
+
+# 1    56.0
+# 2    96.0
+# 3    98.0
+# 4     NaN
+# 5     NaN
+# 6     NaN
+# 7    86.0
+# 8    75.0
+# 9    76.0
+# Name: marks, dtype: float64
+
+print(df.loc[[False,False,True,False,False,True,False,False,True,True]])
+# index number pramane jetlami index upar true ave tene print karse 
+# note : jetla true false atli index hovi jaruri che 
+
+#    id name  rollnum  marks      date
+# 2   3  ccc       13     96  01-01-21
+# 5   6  fff       16     65  08-02-21
+# 8   9  iii       19     75  09-01-21
+# 9  10  jjj       20     76  10-01-21
+
+print(df.loc[df['rollnum'] < 15])
+
+# roll num ma lesthen 15 vala hase tetlani j value apse
+
+#    id name  rollnum  marks      date
+# 0   1  aaa       11     98  02-01-21
+# 1   2  bbb       12     56  03-03-21
+# 2   3  ccc       13     96  01-01-21
+# 3   4  ddd       14     98  01-02-21
+
+
+print(df.loc[df['rollnum'] < 15,['marks','name']])
+
+# roll num 15 thi ocha hoy ane only koi perticuler column noj data joto hoy tyare
+
+#    marks name
+# 0     98  aaa
+# 1     56  bbb
+# 2     96  ccc
+# 3     98  ddd
+
+print(df.iloc[[0]])
+
+#    id name  rollnum  marks      date
+# 0   1  aaa       11     98  02-01-21
+
+print()
+print(df.iloc[:,0])
+
+# badhi row 0 number ni index vali colum ni badhi row ne print karva mate 
+# 0     1
+# 1     2
+# 2     3
+# 3     4
+# 4     5
+# 5     6
+# 6     7
+# 7     8
+# 8     9
+# 9    10
+# Name: id, dtype: int64
+
+
+print(df.iloc[[0,1]])
+
+#  0 ane 1 number ni index no data
+ 
+#  id name  rollnum  marks      date
+# 0   1  aaa       11     98  02-01-21
+# 1   2  bbb       12     56  03-03-21
+
+
+print(df.iloc[[False,False,True,False,False,True,False,False,True,True]])
+
+#    id name  rollnum  marks      date
+# 2   3  ccc       13     96  01-01-21
+# 5   6  fff       16     65  08-02-21
+# 8   9  iii       19     75  09-01-21
+# 9  10  jjj       20     76  10-01-21
+
+
+# 36---------p16----------------------------------------------------------------------------------------
+
+print("___________________groupby__________")
+
+
+gr1 = df.groupby(by='marks')
+# data frame ne group by ma karvama ave tyare te object return kare
+print(gr1)
+# <pandas.core.groupby.generic.DataFrameGroupBy object at 0x000002056699BA90>
+
+print(gr1.groups)
+
+#  marks wise group kari dese k a marks vala data aa insdex number ma che m 
+
+# {56: [1], 65: [5], 75: [8], 76: [9], 85: [6], 86: [4, 7], 96: [2], 98: [0, 3]}
+
+print()
+print(df.groupby(by=['marks','date']).groups)
+
+# marks ane date wise groppup kari dese k a marks vala data aa insd
+
+# {(56, '03-03-21'): [1], (65, '08-02-21'): [5], (75, '09-01-21'): [8], (76, '10-01-21'): [9], (85, '08-08-21'): [6], (86, '05-01-21'): [4], (86, '15-08-21'): [7], (96, '01-01-21'): [2], (98, '02-01-21'): [0, 3]}
+
+for marks,df_1 in gr1:
+    print(marks)
+    print(df_1)
+
+# 56
+#    id name  rollnum  marks      date
+# 1   2  bbb       12     56  03-03-21
+# 65
+#    id name  rollnum  marks      date
+# 5   6  fff       16     65  08-02-21
+# 75
+#    id name  rollnum  marks      date
+# 8   9  iii       19     75  09-01-21
+# 76
+#    id name  rollnum  marks      date
+# 9  10  jjj       20     76  10-01-21
+# 85
+#    id name  rollnum  marks      date
+# 6   7  ggg       17     85  08-08-21
+# 86
+#    id name  rollnum  marks      date
+# 4   5  eee       15     86  05-01-21
+# 7   8  hhh       18     86  15-08-21
+# 96
+#    id name  rollnum  marks      date
+# 2   3  ccc       13     96  01-01-21
+# 98
+#    id name  rollnum  marks      date
+# 0   1  aaa       11     98  02-01-21
+# 3   4  ddd       14     98  02-01-21
+
+
+gl1 = list(gr1)
+print("LLLLLLLLLLLLLLLLLLLLLLL")
+
+print(list(gr1))
+
+#  list ma convert thay jay 
+# [(56,    id name  rollnum  marks      date
+# 1   2  bbb       12     56  03-03-21), (65,    id name  rollnum  marks      date
+# 5   6  fff       16     65  08-02-21), (75,    id name  rollnum  marks      date
+# 8   9  iii       19     75  09-01-21), (76,    id name  rollnum  marks      date
+# 9  10  jjj       20     76  10-01-21), (85,    id name  rollnum  marks      date
+# 6   7  ggg       17     85  08-08-21), (86,    id name  rollnum  marks      date
+# 4   5  eee       15     86  05-01-21
+# 7   8  hhh       18     86  15-08-21), (96,    id name  rollnum  marks      date
+# 2   3  ccc       13     96  01-01-21), (98,    id name  rollnum  marks      date
+# 0   1  aaa       11     98  02-01-21
+# 3   4  ddd       14     98  02-01-21)]
+
+print(dict(list(gr1)))
+
+# {56:    id name  rollnum  marks      date
+# 1   2  bbb       12     56  03-03-21, 65:    id name  rollnum  marks      date
+# 5   6  fff       16     65  08-02-21, 75:    id name  rollnum  marks      date
+# 8   9  iii       19     75  09-01-21, 76:    id name  rollnum  marks      date
+# 9  10  jjj       20     76  10-01-21, 85:    id name  rollnum  marks      date
+# 6   7  ggg       17     85  08-08-21, 86:    id name  rollnum  marks      date
+# 4   5  eee       15     86  05-01-21
+# 7   8  hhh       18     86  15-08-21, 96:    id name  rollnum  marks      date
+# 2   3  ccc       13     96  01-01-21, 98:    id name  rollnum  marks      date
+# 0   1  aaa       11     98  02-01-21
+# 3   4  ddd       14     98  02-01-21}
+
+
+g3 = df.groupby('marks').get_group(86)
+print(g3)
+# marks vali column ma jena 86 hase tenu group banavi ne ape
+
+print(g3.sum())
+
+# g3 ma je group hase teno sum kari de 
+# id                       13
+# name                 eeehhh
+# rollnum                  33
+# marks                   172
+# date       05-01-2115-08-21
+# dtype: object
+
+print(g3.describe())
+
+#  jetli int value hase tena par thata aerithmatic function batavse in
+
+#             id   rollnum  marks
+# count  2.00000   2.00000    2.0
+# mean   6.50000  16.50000   86.0
+# std    2.12132   2.12132    0.0
+# min    5.00000  15.00000   86.0
+# 25%    5.75000  15.75000   86.0
+# 50%    6.50000  16.50000   86.0
+# 75%    7.25000  17.25000   86.0
+# max    8.00000  18.00000   86.0
+
+print(gr1.agg(['sum','max','mean']))
+
+# badhi column upar a badha uperation perform karva hpoy tyare 
+
+#       sum max  mean     sum max  mean
+# marks
+# 56      2   2   2.0      12  12  12.0
+# 65      6   6   6.0      16  16  16.0
+# 75      9   9   9.0      19  19  19.0
+# 76     10  10  10.0      20  20  20.0
+# 85      7   7   7.0      17  17  17.0
+# 86     13   8   6.5      33  18  16.5
+# 96      3   3   3.0      13  13  13.0
+# 98      5   4   2.5      25  14  12.5
+
+
+# 35------p17------------------------------------------------------------------
+
+print("__________________________merge function in pandas ")
+
+df1 = pd.DataFrame({"id":[1,2,3,4],"class":[9,10,11,12]})
+
+print(df1)
+#    id  class
+# 0   1      9
+# 1   2     10
+# 2   3     11
+# 3   4     12
+
+df2 = pd.DataFrame({"id":[1,2,3,4],"name":['a','b','c','d']})
+print(df2)
+
+#    id name
+# 0   1    a
+# 1   2    b
+# 2   3    c
+# 3   4    d
+
+print(pd.merge(df1,df2,on='id'))
+# on =  'id ' thi merge karvama ave che jetlani id sarkhi hase tetli rows j batavase jo id match nai thay teni row nai btave
+# id na base upar banne data frame combin hy jase 
+
+#    id  class name
+# 0   1      9    a
+# 1   2     10    b
+# 2   3     11    c
+# 3   4     12    d
+
+print(pd.merge(df2,df1,on='id'))
+# je dta frame nu name pela rakhvama abve teni series pela ave 
+
+# on =  'id ' thi merge karvama ave che jetlani id sarkhi hase tetli rows j batavase jo id match nai thay teni row nai btave
+
+#    id name  class
+# 0   1    a      9
+# 1   2    b     10
+# 2   3    c     11
+# 3   4    d     12
+
+
+print(pd.merge(df2,df1,on='id',how = 'inner'))
+# how = inner matlab banne ma sarkhi id hase e j avse [intersection]
+ 
+#    id name  class
+# 0   1    a      9
+# 1   2    b     10
+# 2   3    c     11
+# 3   4    d     12
+
+# ---------------------------------------------------
+df1 = pd.DataFrame({"id":[1,2,3,4],"class":[9,10,11,12]})
+
+df2 = pd.DataFrame({"id":[1,2,3,5],"name":['a','b','c','d']})
+
+
+print(pd.merge(df1,df2,on='id',how = 'left'))
+# left ma je detaframe hase te full avse ane rightvali ma nan va;lue avse [left joining type]
+#    id  class name
+# 0   1      9    a
+# 1   2     10    b
+# 2   3     11    c
+# 3   4     12  NaN
+
+print(pd.merge(df1,df2,on='id',how = 'right'))
+# [right join type ]right ma je data frame hase te full fillup avse ane left vali ma unmatch ma nan avse 
+#   id  class name
+# 0   1    9.0    a
+# 1   2   10.0    b
+# 2   3   11.0    c
+# 3   5    NaN    d
+
+print(pd.merge(df1,df2,on='id',how = 'outer'))
+
+# outer ma badha data tahs ematch val apn thse ane unmatch vala pan thase 
+
+#    id  class name
+# 0   1    9.0    a
+# 1   2   10.0    b
+# 2   3   11.0    c
+# 3   4   12.0  NaN
+# 4   5    NaN    d
+
+print(pd.merge(df1,df2,on='id',how = 'outer',indicator = True))
+# indecator = True mins te mearging kai rite thayu che jo banne match thay ne thau hoy ri both ave ,lleft row no data avyo hoy to left_only ave ane right no avyo hoy to right onlly ave ave
+
+#    id  class name      _merge
+# 0   1    9.0    a        both
+# 1   2   10.0    b        both
+# 2   3   11.0    c        both
+# 3   4   12.0  NaN   left_only
+# 4   5    NaN    d  right_only
+
+
+
+df1 = pd.DataFrame({"id":[1,2,3,4],"class":[9,10,11,12]})
+
+df2 = pd.DataFrame({"id":[5,6,7,8],"name":['a','b','c','d']})
+
+print(pd.merge(df1,df2,left_index=True,right_index=True))
+
+# bydefault id_x ane id_y banavi dese ane banne data frame ni value avse 
+
+#    id_x  class  id_y  name
+# 0     1      9     5    a
+# 1     2     10     6    b
+# 2     3     11     7    c
+# 3     4     12     8    d
+
+
+df1 = pd.DataFrame({"id":[1,2,3,4],"class":[9,10,11,12]})
+
+df2 = pd.DataFrame({"id":[1,2,3,4],"class":[9,10,11,12]})
+
+print(pd.merge(df1,df2,on = 'id'))
+# jyare id sarkhi hoy tyare 
+# bt default class_x ane class_y am banne ne print karidese 
+
+#    id  class_x  class_y
+# 0   1        9        9
+# 1   2       10       10
+# 2   3       11       11
+# 3   4       12       12
+
+print(pd.merge(df1,df2,on = 'id',suffixes=["df1_data","df2_data"]))
+
+# by default avti column na name change karva hoy btyare 
+
+#    id  classdf1_data  classdf2_data
+# 0   1              9              9
+# 1   2             10             10
+# 2   3             11             11
+# 3   4             12             12
+
+
+# 36---------p18--------------------------------------concate function
+
+s1 = pd.Series([0,1,2,3])
+print(s1)
+
+s2 = pd.Series([4,5,6,7,8])
+print(s2)
+
+print(pd.concat([s1,s2]))
+
+# 0    0
+# 1    1
+# 2    2
+# 3    3
+# 0    4
+# 1    5
+# 2    6
+# 3    7
+# 4    8
+# dtype: int64
+
+df1 = pd.DataFrame({"id":[1,2,3,4],"name":['a','b','c','d'],"class":[5,6,7,8]})
+print(df1)
+#    id name  class
+# 0   1    a      5
+# 1   2    b      6
+# 2   3    c      7
+# 3   4    d      8
+
+df2 = pd.DataFrame({"id":[5,6,7,8],"name":['e','f','g','h'],"class":[9,10,11,12]})
+print(df2)
+#    id name  class
+# 0   5    e      9
+# 1   6    f     10
+# 2   7    g     11
+# 3   8    h     12
+
+print(pd.concat([df1,df2]))
+# concate ma peli data frame ni niche thii j biji data frame start thay jay ane index number pan te juni data frame no hoiy tej re 
+#    id name  class
+# 0   1    a      5
+# 1   2    b      6
+# 2   3    c      7
+# 3   4    d      8
+# 0   5    e      9
+# 1   6    f     10
+# 2   7    g     11
+# 3   8    h     12
+
+print(pd.concat([df1,df2],axis = 1))
+
+#  axix = 1 hoy tyare column wise data frame nu concatination thay
+#  mins ak dara frame ni column puri thay pachi biji data frame ni column start tyhay jay 
+#    id name  class  id name  class
+# 0   1    a      5   5    e      9
+# 1   2    b      6   6    f     10
+# 2   3    c      7   7    g     11
+# 3   4    d      8   8    h     12
+
+print(pd.concat([df1,df2],ignore_index=True))
+
+# ignore index  = True karvathi index number line ma chalto hoy tem j chale 
+
+#    id name  class
+# 0   1    a      5
+# 1   2    b      6
+# 2   3    c      7
+# 3   4    d      8
+# 4   5    e      9
+# 5   6    f     10
+# 6   7    g     11
+# 7   8    h     12
+
+df1 = pd.DataFrame({"id":[1,2,3,4],"name":['a','b','c','d'],"class":[5,6,7,8]})
+print(df1)
+
+df2= pd.DataFrame({"id":[3,4],"name":['c','d'],"class":[7,8]})
+print(df2)
+
+print(pd.concat([df1,df2],ignore_index=True))
+#  jaruri nathi k banne data frame ni lenth sarkhi hovi joiye
+#    id name  class
+# 0   1    a      5
+# 1   2    b      6
+# 2   3    c      7
+# 3   4    d      8
+# 4   3    c      7
+# 5   4    d      8
+
+
+print(pd.concat([df1,df2],axis = 1))
+
+# banne dat frame ni lengh sarkhi na hoy ane column vise tene  concatinate karvama ave tyare je data frame ma valye ghatti hoy tya by default nan consider kari de 
+
+#    id name  class   id name  class
+# 0   1    a      5  3.0    c    7.0
+# 1   2    b      6  4.0    d    8.0
+# 2   3    c      7  NaN  NaN    NaN
+# 3   4    d      8  NaN  NaN    NaN
+
+print(pd.concat([df1,df2],axis = 1,join = "inner"))
+
+# join = inner karvma ave tyare teni banne ma jo te index value hoy toj concatinate thay 
+
+#    id name  class  id name  class
+# 0   1    a      5   3    c      7
+# 1   2    b      6   4    d      8
+
+
+df1 = pd.DataFrame({"id":[1,2,3,4],"name":['a','b','c','d'],"class":[5,6,7,8]})
+print(df1)
+
+df2 = pd.DataFrame({"id":[5,6,7,8],"name":['e','f','g','h'],"class":[9,10,11,12]})
+print(df2)
+
+print(pd.concat([df1,df2],keys=['first_df','seconf_df']))
+
+
+#  keys no use dataframe ne key apva mate thay che 
+ 
+#              id name  class
+# first_df  0   1    a      5
+#           1   2    b      6
+#           2   3    c      7
+#           3   4    d      8
+# seconf_df 0   5    e      9
+#           1   6    f     10
+#           2   7    g     11
+#           3   8    h     12
+
+
+print(pd.concat([df1,df2],axis = 1,keys=['first_df','seconf_df']))
+
+#  first_df            seconf_df
+#         id name class        id name class
+# 0        1    a     5         5    e     9
+# 1        2    b     6         6    f    10
+# 2        3    c     7         7    g    11
+# 3        4    d     8         8    h    12
+
+# 38----p20---------------join()--------------------------------------------------------------
+
+print("________________________join in pandas")
+
+df1 = pd.DataFrame({"a":[1,2,3],"b":[10,20,30]})
+
+df2 = pd.DataFrame({"c":[4,5,6],"d":[10,20,30]})
+
+print(df1.join(df2))
+
+#    a   b  c   d
+# 0  1  10  4  10
+# 1  2  20  5  20
+# 2  3  30  6  30
+
+
+print(df2.join(df1))
+
+#    c   d  a   b
+# 0  4  10  1  10
+# 1  5  20  2  20
+# 2  6  30  3  30
+
+df1 = pd.DataFrame({"a":[1,2,3],"b":[10,20,30]},index=['a','b','c'])
+print(df1)
+#    a   b
+# a  1  10
+# b  2  20
+# c  3  30
+
+df2 = pd.DataFrame({"c":[4,5],"d":[10,20]},index=['a','b'])
+print(df2)
+#    c   d
+# a  4  10
+# b  5  20
+
+print(df1.join(df2))
+# index alag alag hase to nan vlyu apse 
+# jetlma index match thase ane join karse
+
+#    a   b    c     d
+# a  1  10  4.0  10.0
+# b  2  20  5.0  20.0
+# c  3  30  NaN   NaN
+
+print(df1.join(df2,how='right'))
+
+#  right data farme pramane output ape 
+
+#    a   b  c   d
+# a  1  10  4  10
+# b  2  20  5  20
+
+print(df1.join(df2,how='outer'))
+
+#    a   b    c     d
+# a  1  10  4.0  10.0
+# b  2  20  5.0  20.0
+# c  3  30  NaN   NaN
+
+
+df1 = pd.DataFrame({"a":[1,2,3],"b":[10,20,30]},index=['a','b','c'])
+
+df2 = pd.DataFrame({"a":[4,5],"d":[10,20]},index=['a','b'])
+
+print("PPPPPPPPPPPPPPPPPPPPPPPPPPPP")
+# print(df1.join(df2))
+# be data farme ma jo column na name same hoy tyare erroe ave 
+
+print(df1.join(df2,lsuffix="_1"))
+# lsuffix ma jo banne data frame ni je colum sarkhi hase tyare left vali data farem ni column nu name change kari de 
+
+#    a_1   b    a     d
+# a    1  10  4.0  10.0
+# b    2  20  5.0  20.0
+# c    3  30  NaN   NaN
+
+print(df1.join(df2,rsuffix="_1"))
+
+#  column na name srkha hoy tyare ane join karvama ave tyare eror ave but lsuffix k r suffix no use karvathi left left valu change thay ane rsudffix to right vali data farme ni columnname change thay
+
+#    a   b  a_1     d
+# a  1  10  4.0  10.0
+# b  2  20  5.0  20.0
+# c  3  30  NaN   NaN
+
+# 39--p21-----------------------------------append in pandas 
+
+
+
+
 
 
 
