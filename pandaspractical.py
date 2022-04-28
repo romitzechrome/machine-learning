@@ -5,7 +5,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import os
-
 from pytest import mark 
 
 # patterns ne find out karvaamate pandas no upyog thay 
@@ -1121,6 +1120,7 @@ print(type(df.date[0]))
 # <class 'pandas._libs.tslibs.timestamps.Timestamp'>
 
 df =  pd.read_csv("student.csv",parse_dates=['date'],index_col=['date'])
+# parse date parameter a je te column ne datetimme formate ma conver klari de  
 print(df)
 
 #               id name  rollnum  marks
@@ -1899,36 +1899,297 @@ print(df1.join(df2,rsuffix="_1"))
 
 # 39--p21-----------------------------------append in pandas 
 
+#  ak data frame ma biji data frame na rows k column ne append karva mate k add karva mate thay che 
+# apend  function no use karvathi te navo data frame object return kare 
+
+df1 = pd.DataFrame({"a":[1,2,3],"b":[10,20,30]})
+print(df1)
+#    a   b
+# 0  1  10
+# 1  2  20
+# 2  3  30
+
+df2 = pd.DataFrame({"a":[4,5,6],"b":[40,50,60]})
+print(df2)
+#    a   b
+# 0  4  40
+# 1  5  50
+# 2  6  60
 
 
+print(df1.append(df2,ignore_index=True))
+#    a   b
+# 0  1  10
+# 1  2  20
+# 2  3  30
+# 3  4  40
+# 4  5  50
+# 5  6  60
+
+df1 = pd.DataFrame({"a":[1,2,3],"b":[10,20,30]})
+df2 = pd.DataFrame({"c":[4,5,6],"b":[40,50,60]})
+
+print(df1.append(df2,ignore_index=True,sort = False))
+
+# ignor_index = True mins k index number chalto hoy tej chale ane sort= false mins k 
+
+#     a   b    c
+# 0  1.0  10  NaN
+# 1  2.0  20  NaN
+# 2  3.0  30  NaN
+# 3  NaN  40  4.0
+# 4  NaN  50  5.0
+# 5  NaN  60  6.0
 
 
+# 40----p22-------------------------------------pivot table in pandas-----------------------------------------------------
+print()
+print("_______________________pivot table")
+print()
 
 
+df = pd.read_csv("movie.csv")
+print(df)
+
+#        genre  year  budget  ratings%
+# 0     action  2008      28        48
+# 1     action  2007     200        57
+# 2     action  2009      32        82
+# 3     action  2008      10        56
+# 4  adventure  2010      18        75
+# 5  adventure  2009      20        46
+# 6  adventure  2008      15        65
+# 7     comedy  2007      66        55
+# 8     comedy  2008      56        81
+# 9     comedy  2009      52        71
+
+print(df.pivot_table(index='genre'))
+
+# pivot_table ma je column ne index apvama ave te category wise thay jay ane bakini column ni valyu ni average set thay jay 
+ 
+#               budget  ratings%  year
+# genre
+# action     67.500000     60.75  2008
+# adventure  17.666667     62.00  2009
+# comedy     58.000000     69.00  2008
 
 
+print(df.pivot_table(index='genre',columns='year'))
+
+# column ma je columnname hase tena pramane te dataframe ni information set thay jase 
+# ane badhi column ni value ne average wise batavse
+
+#           budget                   ratings%
+# year        2007  2008  2009  2010     2007  2008  2009  2010
+# genre
+# action     200.0  19.0  32.0   NaN     57.0  52.0  82.0   NaN
+# adventure    NaN  15.0  20.0  18.0      NaN  65.0  46.0  75.0
+# comedy      66.0  56.0  52.0   NaN     55.0  81.0  71.0   NaN
 
 
+print(df.pivot_table(index='genre',columns='year',aggfunc='count'))
+
+# count kari ne appse agfunc ma mostof aggregrate function batavse
+
+#          budget                ratings%
+# year        2007 2008 2009 2010     2007 2008 2009 2010
+# genre
+# action       1.0  2.0  1.0  NaN      1.0  2.0  1.0  NaN
+# adventure    NaN  1.0  1.0  1.0      NaN  1.0  1.0  1.0
+# comedy       1.0  1.0  1.0  NaN      1.0  1.0  1.0  NaN
+
+print(df.pivot_table(index='genre',columns='year',aggfunc='sum'))
+
+#           budget                   ratings%
+# year        2007  2008  2009  2010     2007   2008  2009  2010
+# genre
+# action     200.0  38.0  32.0   NaN     57.0  104.0  82.0   NaN
+# adventure    NaN  15.0  20.0  18.0      NaN   65.0  46.0  75.0
+# comedy      66.0  56.0  52.0   NaN     55.0   81.0  71.0   NaN
+
+print(df.pivot_table(index='genre',columns='year',fill_value='none'))
+
+# jema value nai hoy tene bydefault none rakse none ni jagya par biju game te lakh shakiye
+# note:-  jo avi koi column hoy k jema badhi value none hoy to te column ne by default remove kari dese
+#           budget                   ratings%
+# year        2007  2008  2009  2010     2007  2008  2009  2010
+# genre
+# action     200.0  19.0  32.0  none     57.0  52.0  82.0  none
+# adventure   none  15.0  20.0  18.0     none  65.0  46.0  75.0
+# comedy      66.0  56.0  52.0  none     55.0  81.0  71.0  none
 
 
+print(df.pivot_table(index='genre',columns='year',fill_value='none',dropna=False))
+#  jo koi column ma badhi value nan hoy to te column ne show karvi hoy to dropna=False karvathi te co;lumn pan shoew thase 
 
+print(df.pivot_table(index='genre',columns='year',fill_value='none',dropna=False,margins=True))
 
+# margin = True mins te badhi column no automatic mean kadhi ne all vali column auto matic update kari dese
 
+#           budget                                    ratings%
+# year        2007   2008       2009  2010        All     2007  2008       2009  2010    All
+# genre
+# action     200.0   19.0       32.0  none       67.5     57.0  52.0       82.0  none  60.75
+# adventure   none   15.0       20.0  18.0  17.666667     none  65.0       46.0  75.0   62.0
+# comedy      66.0   56.0       52.0  none       58.0     55.0  81.0       71.0  none   69.0
+# All        133.0  27.25  34.666667  18.0       49.7     56.0  62.5  66.333333  75.0   63.6\
+    
+print(df.pivot_table(index='genre',columns='year',fill_value='none',dropna=False,margins=True,aggfunc='sum'))
 
+# agg_func hoy to all ma te column ni ane row ni value no sum thay ne ave 
+#               budget                        ratings%
+# year        2007  2008  2009  2010  All     2007   2008  2009  2010  All
+# genre
+# action     200.0  38.0  32.0  none  270     57.0  104.0  82.0  none  243
+# adventure   none  15.0  20.0  18.0   53     none   65.0  46.0  75.0  186
+# comedy      66.0  56.0  52.0  none  174     55.0   81.0  71.0  none  207
+# All          266   109   104    18  497      112    250   199    75  636
+    
+# 41-------p23------------------------------------pandas melt ----------
 
+# data ne transform k reshap karva mate rthat che 
 
+    
+df  = pd.read_csv('movie.csv')
+print(df)
+    
+print(pd.melt(df))    
+    
+#      variable      value
+# 0      genre     action
+# 1      genre     action
+# 2      genre     action
+# 3      genre     action
+# 4      genre  adventure
+# 5      genre  adventure
+# 6      genre  adventure
+# 7      genre     comedy
+# 8      genre     comedy
+# 9      genre     comedy
+# 10      year       2008
+# 11      year       2007
+# 12      year       2009
+# 13      year       2008
+# 14      year       2010
+# 15      year       2009
+# 16      year       2008
+# 17      year       2007
+# 18      year       2008
+# 19      year       2009
+# 20    budget         28
+# 21    budget        200
+# 22    budget         32
+# 23    budget         10
+# 24    budget         18
+# 25    budget         20
+# 26    budget         15
+# 27    budget         66
+# 28    budget         56
+# 29    budget         52
+# 30  ratings%         48
+# 31  ratings%         57
+# 32  ratings%         82
+# 33  ratings%         56
+# 34  ratings%         75
+# 35  ratings%         46
+# 36  ratings%         65
+# 37  ratings%         55
+# 38  ratings%         81
+# 39  ratings%         71   
+    
+print(pd.melt(df,id_vars=['genre']))     
+    
+# id_vars ni andar raheli column ne according data set kari ne apse
+    
+#          genre  variable  value
+# 0      action      year   2008
+# 1      action      year   2007
+# 2      action      year   2009
+# 3      action      year   2008
+# 4   adventure      year   2010
+# 5   adventure      year   2009
+# 6   adventure      year   2008
+# 7      comedy      year   2007
+# 8      comedy      year   2008
+# 9      comedy      year   2009
+# 10     action    budget     28
+# 11     action    budget    200
+# 12     action    budget     32
+# 13     action    budget     10
+# 14  adventure    budget     18
+# 15  adventure    budget     20
+# 16  adventure    budget     15
+# 17     comedy    budget     66
+# 18     comedy    budget     56
+# 19     comedy    budget     52
+# 20     action  ratings%     48
+# 21     action  ratings%     57
+# 22     action  ratings%     82
+# 23     action  ratings%     56
+# 24  adventure  ratings%     75
+# 25  adventure  ratings%     46
+# 26  adventure  ratings%     65
+# 27     comedy  ratings%     55
+# 28     comedy  ratings%     81
+# 29     comedy  ratings%     71
 
+print(pd.melt(df,id_vars=['year'],value_vars=['genre']))     
+    
+# ahi year na according gener ne variable dhyan ma rakjhi ne badho data apvama ave che 
 
+#    year variable      value
+# 0  2008    genre     action
+# 1  2007    genre     action
+# 2  2009    genre     action
+# 3  2008    genre     action
+# 4  2010    genre  adventure
+# 5  2009    genre  adventure
+# 6  2008    genre  adventure
+# 7  2007    genre     comedy
+# 8  2008    genre     comedy
+# 9  2009    genre     comedy
+    
+print(pd.melt(df,id_vars=['year'],value_vars=['ratings%']))
+    
+#    year  variable  value
+# 0  2008  ratings%     48
+# 1  2007  ratings%     57
+# 2  2009  ratings%     82
+# 3  2008  ratings%     56
+# 4  2010  ratings%     75
+# 5  2009  ratings%     46
+# 6  2008  ratings%     65
+# 7  2007  ratings%     55
+# 8  2008  ratings%     81
+# 9  2009  ratings%     71
+    
+print(pd.melt(df,id_vars=['year'],value_vars=['ratings%'],var_name='category',value_name='data'))  
 
+# var_name thi variable name ne name api shakay ane value name ne te varuable ni value ne name apoi shakay
 
-
-
-
-
-
-
-
-
-
-
-
+#     year  category  data
+# 0  2008  ratings%    48
+# 1  2007  ratings%    57
+# 2  2009  ratings%    82
+# 3  2008  ratings%    56
+# 4  2010  ratings%    75
+# 5  2009  ratings%    46
+# 6  2008  ratings%    65
+# 7  2007  ratings%    55
+# 8  2008  ratings%    81
+# 9  2009  ratings%    71
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
