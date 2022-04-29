@@ -1,0 +1,55 @@
+# what is feature eng?
+# feature is an attribute mins  k koi car che to teni ghani type k koi vastu upar ananlysis kari shakiye te ne attribute kahevay     
+
+ 
+# variable?
+# characteristics,number,or quantity   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
