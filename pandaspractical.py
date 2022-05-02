@@ -883,7 +883,6 @@ print(df.fillna(5,inplace=True))
 print(df)
 # inplace a pan nan ni jagya par ahi 5 ne set karse pan inplace method che atle teni tej data frame ne update karse 
 
-
 #    student  class  studthours  sleeping hour date
 # 0     1001   10.0           2              9  Yes
 # 1     1002   10.0           6              8  Yes
@@ -1289,7 +1288,7 @@ print(df)
 
 
 print(df.loc[0])
-# first indevc ni value return karse
+# first index ni value return karse
 
 # id                1
 # name            aaa
@@ -1870,7 +1869,6 @@ print(df1.join(df2,how='outer'))
 # a  1  10  4.0  10.0
 # b  2  20  5.0  20.0
 # c  3  30  NaN   NaN
-
 
 df1 = pd.DataFrame({"a":[1,2,3],"b":[10,20,30]},index=['a','b','c'])
 
