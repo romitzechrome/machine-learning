@@ -15,7 +15,7 @@ uc?export=download& insted of open
 #  ak formate mathi bija fomate ma transformation karvano
 
 # aggregasion 
-# normalizations
+# normalizations 
 # feature type convertion
 # attribute/feature construction
 
@@ -110,7 +110,7 @@ print(null_value)
 drop_column = null_value[null_value > 17].keys()
 print(drop_column)
 
-# jetli column ma 17%thi vadhare data missing che te column get karse
+# jetli column ma 17% thi vadhare data missing che te column get karse
 
 # Index(['LotFrontage', 'Alley', 'FireplaceQu', 'PoolQC', 'Fence',
 #        'MiscFeature'],
@@ -183,7 +183,6 @@ pd.set_option('display.max_rows',None)
 print(df.shape)
 print(df.isnull().sum())
 
-
 missing_value__per = df.isnull().sum()/df.shape[0]*100
 
 print(missing_value__per)
@@ -191,7 +190,7 @@ print(missing_value__per)
 # have a % ma jetli value che te nma 20% thi vadhare missing value vali columnn ne hatavi deva mate te 20% thi vdhare missing value vali column ne ak list ma nakhi ne tene drop kari deva ma ave 
 
 drop_column = missing_value__per[missing_value__per > 20].keys()
-# 20% thi vadhu value missing hase tenu ak list taiyar thay jas e
+# 20% thi vadhu value missing hase tenu ak list taiyar thay jase
 print(drop_column)
 # Index(['LotFrontage', 'Alley', 'FireplaceQu', 'PoolQC', 'Fence',
 #        'MiscFeature'],
@@ -220,8 +219,8 @@ print(df3_only_numeric.isnull().sum())
 # have nan value vali column ne ak list ma nkhva mate 
 missing_value_num = [var for var in df3_only_numeric if df3_only_numeric[var].isnull().sum() > 0]
 
-# df3_only_numeric vali datframe ma jetli column ma nan value hase tetli colun missing_value_num ma vai jase 
-print("onlu nan valu column ")
+# df3_only_numeric vali dataframe ma jetli column ma nan value hase tetli colun missing_value_num ma vai jase 
+print("only nan valu column ")
 print(missing_value_num)
 # ['LotFrontage', 'MasVnrArea', 'GarageYrBlt']
 
@@ -401,4 +400,80 @@ print(df_copy[num_var_missing].isnull().sum())
 #     sns.displot(df_copy[var],bins=20,kde_kws={'linewidth':5,'color':"green"},label = "mean")
 #     plt.legend()
 # plt.show()
+
+# -----------------------------------------------------------------------------------
+print("missing value manualy, global")
+
+# jayre mode no use kari ne data fill karvama ave tyare te column ni value random hovi joiye
+# ANE missing value 5% aspas missing hoy tyare mode no use karcvama ave che 
+
+df = pd.read_csv("train.csv")
+print(df.head())
+
+cat_var = df.select_dtypes(include="object")
+print(cat_var.head())
+
+print(cat_var.isnull().sum())
+
+null_value_count = cat_var.isnull().mean()*100
+print(null_value_count)
+
+drop_vars = null_value_count[null_value_count > 6].keys()
+print(drop_vars)
+
+print(cat_var.shape)
+cat_var.drop(columns = drop_vars,inplace = True)
+# inplace = True a teni tej dataframe ma update karva mate inplace no use thay che 
+
+print(cat_var.shape)
+
+isnull_per = cat_var.isnull().mean()*100
+miss_vars = isnull_per[isnull_per > 0].keys()
+
+print(miss_vars)
+# Index(['MasVnrType', 'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1',
+#        'BsmtFinType2', 'Electrical', 'GarageType', 'GarageFinish',
+#        'GarageQual', 'GarageCond'],
+#       dtype='object')
+
+
+print(cat_var['MasVnrType'].mode())
+# 0    None
+# MasVnrType column ma None nam ni value vadhare che matlab mode tarike None avse
+
+
+print(cat_var['MasVnrType'].value_counts())
+
+# MasVnrType column ma raheli badhi value no sum avse matlab k te value wise tenu count thay ne ave 
+
+# None       864
+# BrkFace    445
+# Stone      128
+# BrkCmn      15
+# Name: MasVnrType, dtype: int64
+
+cat_var['MasVnrType'].fillna(cat_var['MasVnrType'].mode()[0])
+
+# MasVnrType column ma te column no mode matlab k vadhare var avti has ete column add karva mate 
+
+for var in miss_vars:
+    cat_var[var].fillna(cat_var[var].mode()[0],inplace=True)
+    print(var ,"=",cat_var[var].mode()[0])
+    
+print(cat_var.isnull().sum())
+
+
+# main data frame ne cat_var data frame thiupdate karva mate 
+df.update(cat_var)
+# main dataframe df ma 5 % karta vadhare vali column ne drop kari didhi 
+df.drop(columns = drop_vars,inplace = True)
+
+# only object datatype dharavti column ne  null che k nai te check karva mate 
+print(df.select_dtypes(include = "object" ).isnull().sum())
+
+
+
+
+
+
 

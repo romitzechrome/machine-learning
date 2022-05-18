@@ -14,6 +14,7 @@ print(arr_1.size)
 # 6
 print(arr_1.shape)
 # (2, 3)
+
 print(arr_1.dtype)
 # int32
 
@@ -226,7 +227,6 @@ print(np.sqrt(array_1d))
 #  [2.         2.23606798 2.44948974]
 #  [2.64575131 2.82842712 3.        ]]
 
- 
 print(np.std(array_1d))
 # find the standerddevision 
 # 2.581988897471611
@@ -578,7 +578,6 @@ print(np.random.randn(3,3))
 # minus ma pan value apse 
 # [[-1.58494101  1.05535316 -1.92657911]
 #  [ 0.69858388 -0.74620143 -0.15662666]
-
 #  [-0.19363594  1.13912535  0.36221796]]
 
 x = [6,9,8,3]

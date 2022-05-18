@@ -126,7 +126,7 @@ print(s4[s4>3])
 # dtype: int64
 
 
-s5= pd.Series([1,2,3,4,5])
+s5 = pd.Series([1,2,3,4,5])
 print(s5)
 # 0    1
 # 1    2
@@ -371,7 +371,6 @@ print(pd.read_csv("data.csv",names=["a","b","c","D","e","f"]))
 # 25--7p-------------------------------------------------------------------------------
 
 df = pd.read_csv("data.csv")
-
 print(df.head())
 
 # head method first 5 record print karse
@@ -387,9 +386,7 @@ print(df.head())
 
 print(df.tail())
 # tail method last 5 record apse
-
 # df.tail(6) last 6 record apse
-
 #    student  class  studthours  sleeping hour
 # 4     1005     11           4              8
 # 5     1006     10           2              9
@@ -413,7 +410,6 @@ print(df.tail())
 # 6     1007   12.0           5              9
 # 7     1008   12.0           6              8
 # 8     1009   10.0           6              8
-
 
 
 df = pd.read_csv("data.csv",true_values=['Yes'])
@@ -457,7 +453,6 @@ print(df)
 -Nan,-nan,N/A,NA,NILL
  null,n/a,nan,1.#IND,,1.#QNAN ) ''' 
 #  a badhi string value ne bydefault pandas NAN consider kare che 
-
 # pandas libreary a none value ne bydefault  Nan kari de 
 
 #    student  class  studthours  sleeping hour date
@@ -521,7 +516,7 @@ print(df)
 
 df = pd.read_csv("data.csv",keep_default_na=False)
 print(df)
-#  bydefault jetla ne NAN value consider na kre tena mate keepdefaultna ne False karvama aave 
+#  bydefault jetla ne NAN value consider kare che tene  na kre tena mate keepdefaultna ne False karvama aave 
 
 #    student         class studthours sleeping hour          date
 # 0     1001            10          2             9           Yes
@@ -738,7 +733,7 @@ print(df.dropna(thresh= 2))
 
 
 print(df.dropna(subset=["class"]))
-# class vali column ma jetli nan value hase te akho row nw drop kari dese 
+# class vali column ma jetli nan value hase te akho row nw drop kari dese. 
 #    student  class  studthours  sleeping hour date
 # 0     1001   10.0           2              9  Yes
 # 1     1002   10.0           6              8  Yes
@@ -784,7 +779,6 @@ print(df.fillna(0))
 # 8     1009   10.0           6              8   No
 
 print("PPPPPPPPPPPPPP")
-
 print(df.fillna({"student":"none","class":0,"studthours":0,"sleeping hour":0}))
 # ama raheli column ma perticuler value set thay jay none ni jagya par 
 
@@ -816,7 +810,6 @@ print(df.fillna(method='ffill'))
 # 8     1009   10.0           6              8   No
 
 print(df.fillna(method='bfill'))
-
 # bfill ma none valyu pachi ni next j value hoy te fill thay jay 
 
 #    student  class  studthours  sleeping hour date
@@ -829,7 +822,6 @@ print(df.fillna(method='bfill'))
 # 6     1007   12.0           5              8  Yes
 # 7     1008   12.0           6              8   No
 # 8     1009   10.0           6              8   No
-
 
 print(df.fillna(method='ffill',axis =0))
 
@@ -926,7 +918,6 @@ print(df.replace(10,50))
 # 7     1008   12.0           6              8  NaN
 # 8     1009   50.0           6              8   No
 
-
 print(df.replace([1,2,3,4,5,6,7,8,9],0))
 
 #  jay jya 1 ,2,3,4,5,6,7,8,9 hase tya 0 thay jase 
@@ -941,7 +932,6 @@ print(df.replace([1,2,3,4,5,6,7,8,9],0))
 # 6     1007   12.0           0              0  Yes
 # 7     1008   12.0           0              0  NaN
 # 8     1009   10.0           0              0   No
-
 
 print(df.replace([1,2,3,4,5,6,7,8,9],[11,12,13,14,15,16,17,18,19]))
 
@@ -1271,7 +1261,6 @@ print(df.interpolate(limit_area='outside'))
 #33 =====p15====================================================================
 
 print("___________________________loc&iloc in pandas")
-
 df =  pd.read_csv("student.csv")
 print(df)
 #    id name  rollnum  marks      date
@@ -1289,7 +1278,6 @@ print(df)
 
 print(df.loc[0])
 # first index ni value return karse
-
 # id                1
 # name            aaa
 # rollnum        11.0
@@ -1348,7 +1336,6 @@ print(df.loc[df['rollnum'] < 15])
 # 1   2  bbb       12     56  03-03-21
 # 2   3  ccc       13     96  01-01-21
 # 3   4  ddd       14     98  01-02-21
-
 
 print(df.loc[df['rollnum'] < 15,['marks','name']])
 
